@@ -23,14 +23,16 @@ $subject_data = getSubjectByCode($_GET['subject_code']);
 <!-- Breadcrumb Navigation -->
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <!-- Link to Dashboard -->
-        <li class="breadcrumb-item" aria-current="page"><a href="../admin/dashboard.php">Dashboard</a></li>
+        <!-- Active link for Dashboard -->
+        <li class="breadcrumb-item"><a href="../admin/dashboard.php">Dashboard</a></li>
         <!-- Link to Add Subject Page -->
         <li class="breadcrumb-item"><a href="add.php">Add Subject</a></li>
         <!-- Active link for Edit Subject Page -->
         <li class="breadcrumb-item active" aria-current="page">Edit Subject</li>
     </ol>
 </nav>
+
+
 
 <!-- Check if the form has been submitted using the POST method -->
 <?php
@@ -41,7 +43,7 @@ $subject_data = getSubjectByCode($_GET['subject_code']);
         $subject_name = postData('subject_name');
         
         // Call the function to update the subject
-        updateSubject($subject_code, $subject_name, "./add.php");
+        updateSubject($subject_code, $subject_name, "../admin/add.php");
     }
 ?>
 
