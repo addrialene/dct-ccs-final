@@ -100,7 +100,8 @@ if (!empty($subject_code)) {
     </div>
 </div>
 
+
 <?php
 // Include the footer section
-include '../partials/footer.php';
+include '../admin/partials/footer.php';
 ?>
