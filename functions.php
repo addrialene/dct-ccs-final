@@ -106,4 +106,108 @@ function displayErrors($errors) {
 
     return $errorHtml;
 }
+
+// Function to count all subjects in the database
+function countAllSubjects() {
+    try {
+        // Get the database connection
+        $conn = getConnection();
+
+        // SQL query to count all subjects
+        $sql = "SELECT COUNT(*) AS total_subjects FROM subjects";
+
+        // Prepare the SQL statement
+        $stmt = $conn->prepare($sql);
+
+        // Execute the query
+        $stmt->execute();
+
+        // Fetch the result as an associative array
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Return the total count of subjects
+        return $result['total_subjects'];
+    } catch (PDOException $e) {
+        // Return error message if there is an exception
+        return "Error: " . $e->getMessage();
+    }
+}
+
+// Function to count all students in the database
+function countAllStudents() {
+    try {
+        // Get the database connection
+        $conn = getConnection();
+
+        // SQL query to count all students
+        $sql = "SELECT COUNT(*) AS total_students FROM students";
+
+        // Prepare the SQL statement
+        $stmt = $conn->prepare($sql);
+
+        // Execute the query
+        $stmt->execute();
+
+        // Fetch the result as an associative array
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Return the total count of students
+        return $result['total_students'];
+    } catch (PDOException $e) {
+        // Return error message if there is an exception
+        return "Error: " . $e->getMessage();
+    }
+}
+
+// Function to calculate the total number of passed and failed students
+function calculateTotalPassedAndFailedStudents() {
+    try {
+        // Get the database connection
+        $conn = getConnection();
+
+        // SQL query to calculate the total grades and subjects for each student
+        $sql = "SELECT student_id, 
+                       SUM(grade) AS total_grades, 
+                       COUNT(subject_id) AS total_subjects 
+                FROM students_subjects 
+                GROUP BY student_id";
+
+        // Prepare the SQL statement
+        $stmt = $conn->prepare($sql);
+
+        // Execute the query
+        $stmt->execute();
+
+        // Fetch all the results as an associative array
+        $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Initialize counters for passed and failed students
+        $passed = 0;
+        $failed = 0;
+
+        // Loop through each student's data
+        foreach ($students as $student) {
+            // Calculate the average grade for the student
+            $average_grade = $student['total_grades'] / $student['total_subjects'];
+
+            // Increment the passed or failed counter based on the grade
+            if ($average_grade >= 75) {
+                $passed++; // Increment passed count if the average grade is 75 or higher
+            } else {
+                $failed++; // Increment failed count if the average grade is below 75
+            }
+        }
+
+        // Return an associative array with the counts of passed and failed students
+        return [
+            'passed' => $passed,
+            'failed' => $failed
+        ];
+    } catch (PDOException $e) {
+        // Return error message if there is an exception
+        return "Error: " . $e->getMessage();
+    }
+}
+
+
 ?>
