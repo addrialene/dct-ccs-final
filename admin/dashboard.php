@@ -31,10 +31,12 @@
             <div class="card border-success mb-3">
                 <div class="card-header bg-success text-white border-success">Number of Passed Students:</div>
                 <div class="card-body text-success">
-                    <h5 class="card-title">0></h5>
+                    <h5 class="card-title">0</h5>
                 </div>
             </div>
         </div>
     </div>    
 </main>
 <!-- Template Files here -->
+ <!-- Add Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
