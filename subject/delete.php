@@ -25,7 +25,7 @@ if (isPost()) {
 <div class="col-md-9 col-lg-10">
 
     <!-- Page Heading -->
-    <h3 class="text-left mb-5 mt-5">Remove Subject</h3>
+    <h3 class="text-left mb-5 mt-5">Delete Subject</h3>
 
     <!-- Breadcrumb Navigation -->
     <nav aria-label="breadcrumb">
@@ -42,7 +42,7 @@ if (isPost()) {
     <!-- Confirmation Section for Deletion -->
     <div class="border p-5">
         <!-- Prompt asking for confirmation -->
-        <p class="text-left">Do you really want to remove the following subject entry?</p>
+        <p class="text-left">Do you really want to delete the following subject entry?</p>
         <ul class="text-left">
             <!-- Display subject code and name for review -->
             <li><strong>Subject Code:</strong> <?= htmlspecialchars($subjectDetails['subject_code']) ?></li>
@@ -54,7 +54,7 @@ if (isPost()) {
             <!-- Link to cancel and go back to the subject creation page -->
             <a href="add.php" class="btn btn-secondary">Cancel</a>
             <!-- Button to confirm deletion -->
-            <button type="submit" class="btn btn-danger">Remove Subject Record</button>
+            <button type="submit" class="btn btn-danger">Delete Subject Record</button>
         </form>
     </div>
 
