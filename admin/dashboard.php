@@ -1,4 +1,16 @@
+<?php
+include '../functions.php';
+
+$logoutPage = 'logout.php';
+$subjectPage = '../admin/subject/add.php';
+$studentPage = '../admin/student/register.php';
+require './partials/header.php';
+require './partials/side-bar.php';
+
+?>
+
 <!-- Template Files here -->
+
 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 pt-5">    
     <h1 class="h2">Dashboard</h1>        
     
@@ -38,5 +50,4 @@
     </div>    
 </main>
 <!-- Template Files here -->
- <!-- Add Bootstrap CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
