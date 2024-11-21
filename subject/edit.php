@@ -43,7 +43,7 @@ $subject_data = getSubjectByCode($_GET['subject_code']);
         $subject_name = postData('subject_name');
         
         // Call the function to update the subject
-        updateSubject($subject_code, $subject_name, "../admin/add.php");
+        updateSubject($subject_code, $subject_name, "../subject/add.php");
     }
 ?>
 

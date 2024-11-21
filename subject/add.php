@@ -18,7 +18,7 @@ include '../admin/partials/side-bar.php'; // Sidebar navigation
     <!-- Helps the user know their current page and navigate back -->
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="../dashboard.php">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="../admin/dashboard.php">Dashboard</a></li>
             <li class="breadcrumb-item active" aria-current="page">Add Subject</li>
         </ol>
     </nav>

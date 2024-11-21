@@ -329,6 +329,33 @@ function isPost(){
     return $_SERVER['REQUEST_METHOD'] == "POST";
 }
 
+function removeSubject($code, $redirectUrl) {
+    try {
+        // Establish a connection to the database
+        $dbConnection = getConnection();
+
+        // Write the SQL query to remove the subject
+        $query = "DELETE FROM subjects WHERE subject_code = :code";
+        $statement = $dbConnection->prepare($query);
+
+        // Bind the subject code to the SQL query parameter
+        $statement->bindParam(':code', $code, PDO::PARAM_STR);
+
+        // Execute the query and handle success
+        if ($statement->execute()) {
+            // Redirect to the specified page after deletion
+            echo "<script>window.location.href = '$redirectUrl';</script>";
+        } else {
+            // Return a failure message if deletion was not successful
+            return "Could not remove the subject with code $code.";
+        }
+    } catch (PDOException $exception) {
+        // Return the error message if a database exception occurs
+        return "Error occurred: " . $exception->getMessage();
+    }
+}
+
+
 
 
 
