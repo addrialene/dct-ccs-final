@@ -199,9 +199,124 @@ function fetchSub() {
     }
 }
 
+// Function to fetch subject details using its code
+function getSubjectByCode($subject_code) {
+    // Get database connection
+    $pdo = getConnection();
 
+    // SQL query to fetch subject details by its unique subject_code
+    $query = "SELECT * FROM subjects WHERE subject_code = :subject_code";
 
+    // Prepare the SQL statement
+    $stmt = $pdo->prepare($query);
 
+    // Execute the statement with the provided subject_code
+    $stmt->execute([':subject_code' => $subject_code]);
+
+    // Fetch and return the subject details as an associative array
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+// Function to check for duplicate subject code or name during registration
+function checkDuplicateSubjectData($subject_code, $subject_name) {
+    // Get database connection
+    $conn = getConnection();
+
+    // SQL query to check if the subject code or name already exists in the database
+    $sql = "SELECT * FROM subjects WHERE subject_code = :subject_code OR subject_name = :subject_name";
+    $stmt = $conn->prepare($sql);
+
+    // Bind parameters to prevent SQL injection
+    $stmt->bindParam(':subject_code', $subject_code);
+    $stmt->bindParam(':subject_name', $subject_name);
+
+    // Execute the query
+    $stmt->execute();
+
+    // Fetch the results to check if any matching subject exists
+    $existing_subject = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Return an error message if a duplicate is found
+    if ($existing_subject) {
+        return ["Duplicate subject found: The subject code or name already exists."];
+    }
+
+    // Return an empty array if no duplicate is found
+    return [];
+}
+
+// Function to check for duplicate subject names when editing a subject
+function checkDuplicateSubjectForEdit($subject_name) {
+    // Get database connection
+    $conn = getConnection();
+
+    // SQL query to check if the subject name already exists
+    $sql = "SELECT * FROM subjects WHERE subject_name = :subject_name";
+    $stmt = $conn->prepare($sql);
+
+    // Bind the subject name parameter to prevent SQL injection
+    $stmt->bindParam(':subject_name', $subject_name);
+
+    // Execute the query
+    $stmt->execute();
+
+    // Fetch the results to check for duplicates
+    $existing_subject = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Return an error message if a duplicate name is found
+    if ($existing_subject) {
+        return ["Duplicate subject found: The subject code or name already exists."];
+    }
+
+    // Return an empty array if no duplicate is found
+    return [];
+}
+
+// Function to update an existing subject's details in the database
+function updateSubject($subject_code, $subject_name, $redirectPage) {
+    // Validate subject data to ensure it meets requirements
+    $validateSubjectData = validateSubjectData($subject_code, $subject_name);
+
+    // Check for duplicate subject name
+    $checkDuplicate = checkDuplicateSubjectForEdit($subject_name);
+
+    // Display validation errors if any are found
+    if (count($validateSubjectData) > 0) {
+        echo displayErrors($validateSubjectData);
+        return;
+    }
+
+    // Display duplicate errors if a duplicate subject name exists
+    if (count($checkDuplicate) == 1) {
+        echo displayErrors($checkDuplicate);
+        return;
+    }
+
+    try {
+        // Get the database connection
+        $pdo = getConnection();
+
+        // SQL query to update the subject name for a given subject code
+        $sql = "UPDATE subjects SET subject_name = :subject_name WHERE subject_code = :subject_code";
+        $stmt = $pdo->prepare($sql);
+
+        // Bind parameters to prevent SQL injection
+        $stmt->bindParam(':subject_name', $subject_name, PDO::PARAM_STR);
+        $stmt->bindParam(':subject_code', $subject_code, PDO::PARAM_STR);
+
+        // Execute the query
+        if ($stmt->execute()) {
+            // Redirect the user to the specified page after successful update
+            echo "<script>window.location.href = '$redirectPage';</script>";
+        } else {
+            // Return an error message if the update fails
+            return 'Failed to update subject';
+        }
+    } catch (PDOException $e) {
+        // Catch any database-related errors and return the message
+        return "Error: " . $e->getMessage();
+    }
+}
 
 
 
