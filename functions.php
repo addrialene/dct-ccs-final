@@ -106,4 +106,111 @@ function displayErrors($errors) {
 
     return $errorHtml;
 }
+
+
+function countAllSubjects() {
+    try {
+        // Get the database connection
+        $conn = getConnection();
+
+        // SQL query to count all subjects
+        $sql = "SELECT COUNT(*) AS total_subjects FROM subjects";
+        $stmt = $conn->prepare($sql);
+
+        // Execute the query
+        $stmt->execute();
+
+        // Fetch the result
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Return the count
+        return $result['total_subjects'];
+    } catch (PDOException $e) {
+        // Handle any errors
+        return "Error: " . $e->getMessage();
+    }
+}
+
+
+function addSubject($subject_code, $subject_name) {
+    $validateSubjectData = validateSubjectData($subject_code, $subject_name);
+
+
+    // Get database connection
+    $conn = getConnection();
+
+    try {
+        // Prepare SQL query to insert subject into the database
+        $sql = "INSERT INTO subjects (subject_code, subject_name) VALUES (:subject_code, :subject_name)";
+        $stmt = $conn->prepare($sql);
+
+        // Bind parameters to the SQL query
+        $stmt->bindParam(':subject_code', $subject_code);
+        $stmt->bindParam(':subject_name', $subject_name);
+
+        // Execute the query
+        if ($stmt->execute()) {
+            return true; // Subject successfully added
+        } else {
+            return "Failed to add subject."; // Query execution failed
+        }
+    } catch (PDOException $e) {
+        // Return error message if the query fails
+        return "Error: " . $e->getMessage();
+    }
+}
+
+function validateSubjectData($subject_code, $subject_name ) {
+    $errors = [];
+
+    // Check if subject_code is empty
+    if (empty($subject_code)) {
+        $errors[] = "Subject code is required.";
+    }
+
+    // Check if subject_name is empty
+    if (empty($subject_name)) {
+        $errors[] = "Subject name is required.";
+    }
+
+    return $errors;
+}
+
+function fetchSub() {
+    // Get the database connection
+    $conn = getConnection();
+
+    try {
+        // Prepare SQL query to fetch all subjects
+        $sql = "SELECT * FROM subjects";
+        $stmt = $conn->prepare($sql);
+
+        // Execute the query
+        $stmt->execute();
+
+        // Fetch all subjects as an associative array
+        $subjects = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Return the list of subjects
+        return $subjects;
+    } catch (PDOException $e) {
+        // Return an empty array in case of error
+        return [];
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ?>

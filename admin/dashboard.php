@@ -1,8 +1,8 @@
 <?php
 include '../functions.php';
 
-$logoutPage = 'logout.php';
-$subjectPage = '../admin/subject/add.php';
+$logoutPage = '../admin/logout.php';
+$subjectPage = '../subject/add.php';
 $studentPage = '../admin/student/register.php';
 require './partials/header.php';
 require './partials/side-bar.php';
