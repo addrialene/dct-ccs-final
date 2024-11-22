@@ -6,6 +6,32 @@ function postData($key) {
     return isset($_POST[$key]) ? $_POST[$key] : null;
 }
 
+// Function to prevent logged-in users from accessing the login page
+function guardLogin() {
+    // Define the dashboard page URL
+    $dashboardPage = 'admin/dashboard.php';
+
+    // Check if the user is already logged in (session variable is set)
+    if (isset($_SESSION['email'])) {
+        // Redirect the logged-in user to the dashboard
+        header("Location: $dashboardPage");
+        exit(); // Ensure no further code is executed
+    }
+}
+
+// Function to prevent unauthenticated users from accessing the dashboard
+function guardDashboard() {
+    // Define the login page URL
+    $loginPage = '../index.php';
+
+    // Check if the user is not logged in (session variable is not set)
+    if (!isset($_SESSION['email'])) {
+        // Redirect the unauthenticated user to the login page
+        header("Location: $loginPage");
+        exit(); // Ensure no further code is executed
+    }
+}
+
 
  
 function getConnection() {
@@ -727,7 +753,21 @@ function GETdata($key){
  
 }
 
+function logout($indexPage) {
+    // Unset the 'email' session variable
+    unset($_SESSION['email']);
+
+    // Destroy the session
+    session_destroy();
+
+    // Redirect to the login page (index.php)
+    header("Location: $indexPage");
+    exit;
+}
+
 function isPost(){
     return $_SERVER['REQUEST_METHOD'] == "POST";
 }
+
+
 ?>

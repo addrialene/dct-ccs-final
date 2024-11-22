@@ -1,8 +1,7 @@
 <?php
 // Include the necessary functions
 require 'functions.php';
-// Call the guardLogin function to check user login status
-
+guardLogin();
 ?>
 
 <!DOCTYPE html>

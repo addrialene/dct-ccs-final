@@ -1,6 +1,7 @@
 <?php
-include '../functions.php';
 
+include '../functions.php';
+guardDashboard();
 $logoutPage = '../admin/logout.php';
 $subjectPage = '../subject/add.php';
 $studentPage = '../student/register.php';
