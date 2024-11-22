@@ -3,9 +3,9 @@ include '../functions.php';
 
 $logoutPage = '../admin/logout.php';
 $subjectPage = '../subject/add.php';
-$studentPage = '../admin/student/register.php';
-require './partials/header.php';
-require './partials/side-bar.php';
+$studentPage = '../student/register.php';
+require '../admin/partials/header.php';
+require '../admin/partials/side-bar.php';
 
 ?>
 
