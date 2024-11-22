@@ -8,6 +8,11 @@ $studentPage = '../student/register.php';
 require '../admin/partials/header.php';
 require '../admin/partials/side-bar.php';
 
+$total_subjects = countAllSubjects();
+$total_students = countAllStudents();
+$failedAndPassed = calculateTotalPassedAndFailedStudents();
+
+
 ?>
 
 <!-- Template Files here -->

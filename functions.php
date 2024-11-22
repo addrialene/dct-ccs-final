@@ -157,6 +157,69 @@ function countAllSubjects() {
     }
 }
 
+function countAllStudents() {
+    try {
+        // Get the database connection
+        $conn = getConnection();
+
+        // SQL query to count all students
+        $sql = "SELECT COUNT(*) AS total_students FROM students";
+        $stmt = $conn->prepare($sql);
+
+        // Execute the query
+        $stmt->execute();
+
+        // Fetch the result
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        // Return the count
+        return $result['total_students'];
+    } catch (PDOException $e) {
+        // Handle any errors
+        return "Error: " . $e->getMessage();
+    }
+}
+
+function calculateTotalPassedAndFailedStudents() {
+    try {
+        // Get the database connection
+        $conn = getConnection();
+
+        // SQL query to calculate the total grade for each student and their count of assigned subjects
+        $sql = "SELECT student_id, 
+                       SUM(grade) AS total_grades, 
+                       COUNT(subject_id) AS total_subjects 
+                FROM students_subjects 
+                GROUP BY student_id";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $students = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Initialize counters
+        $passed = 0;
+        $failed = 0;
+
+        // Loop through each student
+        foreach ($students as $student) {
+            $average_grade = $student['total_grades'] / $student['total_subjects'];
+            if ($average_grade >= 75) {
+                $passed++;
+            } else {
+                $failed++;
+            }
+        }
+
+        // Return the total passed and failed students
+        return [
+            'passed' => $passed,
+            'failed' => $failed
+        ];
+    } catch (PDOException $e) {
+        return "Error: " . $e->getMessage();
+    }
+}
+
 
 
 function addSubject($subject_code, $subject_name) {
@@ -198,7 +261,6 @@ function addSubject($subject_code, $subject_name) {
         return "Error: " . $e->getMessage();
     }
 }
-
 
 
 
@@ -466,19 +528,14 @@ function updateStudent($student_id, $student_firstname, $student_lastname, $redi
 
 
     $validateStudentData = validateStudentData($student_id, $student_firstname, $student_lastname);
-    //$checkDuplicateStudentData = checkDuplicateStudentForEdit($student_id);
+    
 
     if(count($validateStudentData) > 0){
         echo displayErrors($validateStudentData);
         return;
     }
 
-    // if(count($checkDuplicateStudentData) == 1){
-    //     echo displayErrors($checkDuplicateStudentData);
-    //     return;
-    // }
-
-
+   
 
     try {
         // Get the database connection
@@ -505,8 +562,6 @@ function updateStudent($student_id, $student_firstname, $student_lastname, $redi
         return "Error: " . $e->getMessage();
     }
 }
-
-
 
 
 
